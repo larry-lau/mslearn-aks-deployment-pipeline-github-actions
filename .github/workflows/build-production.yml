@@ -10,10 +10,13 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: Get the version
+      - name: Get the version 1
         id: get_version
         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}    
-  
+      
+      - name: Get the version 2        
+        run : echo ${{ github.event.release.tag_name }}
+
       - uses: actions/checkout@v2
 
       - name: Set up Buildx
@@ -30,5 +33,5 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          tags: ${{secrets.ACR_NAME}}/contoso-website:latest,${{secrets.ACR_NAME}}/contoso-website:${GITHUB_REF#refs/tags}
+          tags: ${{secrets.ACR_NAME}}/contoso-website:latest,${{secrets.ACR_NAME}}/contoso-website:${{ github.event.release.tag_name }}
           push: true
