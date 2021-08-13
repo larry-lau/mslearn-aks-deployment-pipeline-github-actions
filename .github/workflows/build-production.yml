@@ -10,6 +10,10 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}    
+  
       - uses: actions/checkout@v2
 
       - name: Set up Buildx
